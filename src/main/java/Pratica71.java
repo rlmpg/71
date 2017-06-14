@@ -1,7 +1,10 @@
+
+import java.util.List;
 import java.util.Scanner;
-import java.util.ArrayList;
 import utfpr.ct.dainf.if62c.pratica.Jogador;
-import java.util.Collections;
+import utfpr.ct.dainf.if62c.pratica.JogadorComparator;
+import utfpr.ct.dainf.if62c.pratica.Time;
+
 /**
  * UTFPR - Universidade Tecnológica Federal do Paraná
  * DAINF - Departamento Acadêmico de Informática
@@ -9,65 +12,53 @@ import java.util.Collections;
  * Template de projeto de programa Java usando Maven.
  * @author Wilson Horstmeyer Bogado <wilson@utfpr.edu.br>
  */
-public class Pratica71 {  
-    private static final ArrayList<Jogador> team = new ArrayList<>();
-    
+public class Pratica71 {
     public static void main(String[] args) {
+        Time time = new Time();
         
-        int num = 0;
-        String name = null;
-        Integer numjogadores;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Número de jogadores a serem lidos: ");
-        numjogadores = scanner.nextInt();
-        for (int i = 0; i < numjogadores; i++){
-            System.out.println("Número do Jogador: ");            
-            boolean verifica = false;
-            while(!verifica){
-                verifica = scanner.hasNextInt();
-                if(verifica)
-                    num = scanner.nextInt();
-                else
-                    scanner.next();
+        int numJogadores;
+        int numJogador = 0;
+        System.out.print("Informe a quantidade de jogadores: ");
+        numJogadores = scanner.nextInt();
+        
+        for(int i = 0; i < numJogadores; i++) {
+            System.out.print("Informe o número do jogador: ");
+            if(scanner.hasNextInt()) {
+                numJogador = scanner.nextInt();
             }
-            System.out.println("Nome do jogador: ");
-            scanner.next();
+            System.out.print("Informe o nome do jogador: ");
+            String nomeJogador = scanner.next();
+            time.addJogador(new Jogador(numJogador, nomeJogador));
+        }
+      
+        JogadorComparator ordem = new JogadorComparator(true, true, false);
+        List<Jogador> timeA = time.ordena(ordem);  
+
+         timeA.forEach((jogador) -> {
+            System.out.println(jogador.toString());
+        });
+        
+        
+        while(numJogador != 0) {
+            System.out.print("Informe o número do jogador: ");
+            if(scanner.hasNextInt()) {
+                numJogador = scanner.nextInt();
+            }
+            if(numJogador == 0) break;
+            System.out.print("Informe o nome do jogador: ");
+            String nomeJogador = scanner.next();
+            time.addJogador(new Jogador(numJogador, nomeJogador));
             
-            team.add(new Jogador(num, name));
+            time.ordena(ordem);
+            timeA.forEach((jogador) -> {
+                System.out.println(jogador.toString());
+            });
         }
         
-        Collections.sort(team);
-        showTeam();
+        timeA.forEach((jogador) -> {
+            System.out.println(jogador.toString());
+        });
         
-   
-       while(num > 0){
-            System.out.println("Número do Jogador: ");            
-            boolean verifica = false;
-            while(!verifica){
-                verifica = scanner.hasNextInt();
-                if(verifica)
-                    num = scanner.nextInt();
-                else
-                    scanner.next();
-            }
-            System.out.println("Nome do jogador: ");
-            scanner.next();
-            Jogador x = new Jogador(num, name);
-            int posicao = Collections.binarySearch(team, x);
-            
-            if(posicao < 0){
-                team.add(-1, x);
-            }else
-                team.set(posicao, x);
-            
-       }        
-        
-    }
-    
-    private static void showTeam(){
-        System.out.println("Time:\n");
-        for (Jogador x: team) {
-            System.out.printf("%d  -  %s\n", x.getNum(), x.getName());
-        } 
     }
 }

@@ -1,69 +1,55 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package utfpr.ct.dainf.if62c.pratica;
+
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * IF62C Fundamentos de Programação 2
- * Exercício de programação em Java.
- * @author Wilson Horstmeyer Bogado <wilson@utfpr.edu.br>
+ *
+ * @author leandro
  */
 public class JogadorComparator implements Comparator<Jogador>{
 
-    private boolean ordNum = true;
-    private int multNum = 1;
-    private int multNome = 1;
-
+    private final boolean porNum;
+    private final int porNumAsc;
+    private final int porNomeAsc;
+    
+    
     public JogadorComparator() {
-    }
+        porNum = true;
+        porNumAsc = 1;
+        porNomeAsc = 1;
+    }    
+    
+    public JogadorComparator(boolean porNum, boolean porNumAsc, boolean porNomeAsc) {
+        this.porNum = porNum;
+        
+        if (porNumAsc == true)
+            this.porNumAsc = +1;
+        else this.porNumAsc = -1;
+      
+        if (porNomeAsc == true)
+            this.porNomeAsc = +1;
+        else this.porNomeAsc = -1;
 
-    public JogadorComparator(boolean ordNum, boolean numAsc, boolean nomeAsc) {
-        this.ordNum = ordNum;
-        this.multNum = numAsc ? 1 : -1;
-        this.multNome = nomeAsc ? 1 : -1;
-    }
-
-    public boolean isOrdNum() {
-        return ordNum;
-    }
-
-    public void setOrdNum(boolean ordNum) {
-        this.ordNum = ordNum;
-    }
-
-    public boolean isNumAsc() {
-        return multNum == 1;
-    }
-
-    public void setNumAsc(boolean numAsc) {
-        this.multNum = numAsc ? 1 : -1;
-    }
-
-    public boolean getNomeAsc() {
-        return multNome == 1;
-    }
-
-    public void setNomeAsc(boolean nomeAsc) {
-        this.multNome = nomeAsc ? 1 : -1;
-    }
-
-    private int comparaNumero(Jogador j1, Jogador j2) {
-        return multNum * (j1.getNum() - j2.getNum());
-    }
-
-    private int comparaNome(Jogador j1, Jogador j2) {
-        return multNome * j1.getName().compareTo(j2.getName());
-    }
-
+    }    
+           
     @Override
-    public int compare(Jogador j1, Jogador j2) {
-        int comp;
-        if (ordNum) {
-            comp = comparaNumero(j1, j2);
-            if (comp == 0) comp = comparaNome(j1, j2);
-        } else {
-            comp = comparaNome(j1, j2);
-            if (comp == 0) comp = comparaNumero(j1, j2);
-        }
-        return comp;
+    public int compare(Jogador o1, Jogador o2) {
+        if (porNum == true)
+         if (o1.getNumero() == o2.getNumero())
+            if (o1.getNome().equalsIgnoreCase(o2.getNome()))
+                return(0);
+            else return((o1.getNome().compareToIgnoreCase(o2.getNome())) * this.porNomeAsc);
+         else return((o1.getNumero()- o2.getNumero()) * this.porNumAsc);
+      else
+        if (o1.getNome().equalsIgnoreCase(o2.getNome()))
+           return((o1.getNumero() - o2.getNumero()) * this.porNumAsc);
+        else return((o1.getNome().compareToIgnoreCase(o2.getNome())) * this.porNomeAsc);    
     }
-
+    
 }
